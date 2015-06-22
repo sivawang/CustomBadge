@@ -78,13 +78,15 @@
     NSDictionary *fontAttr = @{ NSFontAttributeName : [self fontForBadgeWithSize:12] };
 	CGSize stringSize = [badgeString sizeWithAttributes:fontAttr];
 	CGFloat flexSpace;
-	if ([badgeString length]>=2) {
-		flexSpace = [badgeString length];
-		rectWidth = 25 + (stringSize.width + flexSpace); rectHeight = 25;
-		retValue = CGSizeMake(rectWidth*badgeScaleFactor, rectHeight*badgeScaleFactor);
-	} else {
-		retValue = CGSizeMake(25*badgeScaleFactor, 25*badgeScaleFactor);
-	}
+    if ([badgeString length]>=2) {
+        flexSpace = [badgeString length];
+        rectWidth = 25 + (stringSize.width + flexSpace); rectHeight = 25;
+        retValue = CGSizeMake(rectWidth*badgeScaleFactor, rectHeight*badgeScaleFactor);
+    } else if ([badgeString length]==1) {
+        retValue = CGSizeMake(25*badgeScaleFactor, 25*badgeScaleFactor);
+    } else {
+        retValue = CGSizeMake(10*badgeScaleFactor, 10*badgeScaleFactor);
+    }
 	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, retValue.width, retValue.height);
 	self.badgeText = badgeString;
 	[self setNeedsDisplay];
@@ -201,7 +203,7 @@
 	
 	
     CGContextBeginPath(context);
-	CGFloat lineSize = 2;
+	CGFloat lineSize = 1;
 	if(self.badgeScaleFactor>1) {
 		lineSize += self.badgeScaleFactor*0.25;
 	}
